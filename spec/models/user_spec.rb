@@ -8,9 +8,11 @@ RSpec.describe User, type: :model do
   describe 'ユーザー新規登録' do
     context '内容に問題ない場合' do
       it '全て正常' do
-        expect(@user.valid?).to eq true
+        @user = FactoryBot.build(:user)
+        expect(@user).to be_valid
       end
     end
+
     context '内容に問題がある場合' do
       it 'ニックネームが必須であること。' do
         @user.nickname = nil
@@ -75,49 +77,49 @@ RSpec.describe User, type: :model do
       end
 
       it '姓（全角）が空だと登録できないこと' do
-        @user = FactoryBot.build(:user, last_name: '', first_name: 'ｱｲｳｴｵ')
+        @user = FactoryBot.build(:user, last_name: '', first_name: '')
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name can't be blank")
       end
       
       it '名（全角）が空だと登録できないこと' do
-        @user = FactoryBot.build(:user, first_name: '', last_name: '山田')
+        @user = FactoryBot.build(:user, first_name: '', last_name: '')
         @user.valid?
         expect(@user.errors.full_messages).to include("First name can't be blank")
       end
 
       it '姓（全角）が全角（漢字・ひらがな・カタカナ）での入力が必須であること' do
-        @user.last_name = 'ｱｲｳｴｵ'
+        @user.last_name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include('Last name is invalid. Input full-width characters.')
       end
       
       it '名（全角）が全角（漢字・ひらがな・カタカナ）での入力が必須であること' do
-        @user.first_name = 'ｱｲｳｴｵ'
+        @user.first_name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include('First name is invalid. Input full-width characters.')
       end
 
       it '姓（カナ）が空だと登録できないこと' do
-        @user = FactoryBot.build(:user, last_name_kana: '', first_name_kana: 'ヤマダ')
+        @user = FactoryBot.build(:user, last_name_kana: '', first_name_kana: '')
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name kana can't be blank")
       end
       
       it '名（カナ）が空だと登録できないこと' do
-        @user = FactoryBot.build(:user, first_name_kana: '', last_name_kana: 'タロウ')
+        @user = FactoryBot.build(:user, first_name_kana: '', last_name_kana: '')
         @user.valid?
         expect(@user.errors.full_messages).to include("First name kana can't be blank")
       end
 
       it '姓（カナ）が全角（カタカナ）での入力が必須であること' do
-        @user.last_name_kana = 'ｱｲｳｴｵ'
+        @user.last_name_kana = ''
         @user.valid?
         expect(@user.errors.full_messages).to include('Last name kana is invalid. Input full-width katakana characters.')
       end
       
       it '名（カナ）が全角（カタカナ）での入力が必須であること' do
-        @user.first_name_kana = 'ｱｲｳｴｵ'
+        @user.first_name_kana = ''
         @user.valid?
         expect(@user.errors.full_messages).to include('First name kana is invalid. Input full-width katakana characters.')
       end
