@@ -75,15 +75,15 @@ RSpec.describe User, type: :model do
       end
 
       it '姓（全角）が空だと登録できないこと' do
-        user = FactoryBot.build(:user, last_name: '', first_name: 'ｱｲｳｴｵ')
-        user.valid?
-        expect(user.errors.full_messages).to include("Last name can't be blank")
+        @user = FactoryBot.build(:user, last_name: '', first_name: 'ｱｲｳｴｵ')
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name can't be blank")
       end
       
       it '名（全角）が空だと登録できないこと' do
-        user = FactoryBot.build(:user, last_name: 'ｱｲｳｴｵ', first_name: '')
-        user.valid?
-        expect(user.errors.full_messages).to include("First name can't be blank")
+        @user = FactoryBot.build(:user, first_name: '', last_name: '山田')
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name can't be blank")
       end
 
       it '姓（全角）が全角（漢字・ひらがな・カタカナ）での入力が必須であること' do
@@ -99,15 +99,15 @@ RSpec.describe User, type: :model do
       end
 
       it '姓（カナ）が空だと登録できないこと' do
-        user = FactoryBot.build(:user, last_name_kana: '', first_name_kana: 'アイウエオ')
-        user.valid?
-        expect(user.errors.full_messages).to include("Last name kana can't be blank")
+        @user = FactoryBot.build(:user, last_name_kana: '', first_name_kana: 'ヤマダ')
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name kana can't be blank")
       end
       
       it '名（カナ）が空だと登録できないこと' do
-        user = FactoryBot.build(:user, last_name_kana: 'アイウエオ', first_name_kana: '')
-        user.valid?
-        expect(user.errors.full_messages).to include("First name kana can't be blank")
+        @user = FactoryBot.build(:user, first_name_kana: '', last_name_kana: 'タロウ')
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana can't be blank")
       end
 
       it '姓（カナ）が全角（カタカナ）での入力が必須であること' do
