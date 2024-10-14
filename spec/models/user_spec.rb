@@ -8,7 +8,6 @@ RSpec.describe User, type: :model do
   describe 'ユーザー新規登録' do
     context '内容に問題ない場合' do
       it '全て正常' do
-        @user = FactoryBot.build(:user)
         expect(@user).to be_valid
       end
     end
