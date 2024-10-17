@@ -7,6 +7,8 @@ class User < ApplicationRecord
   validates :nickname, presence: true
   validates :birthday, presence: true
 
+  has_many :items
+
   with_options presence: true do
     # ひらがな、カタカナ、漢字のみ許可する
     validates :last_name, :first_name, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: 'is invalid. Input full-width characters.' }
