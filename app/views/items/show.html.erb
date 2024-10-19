@@ -8,10 +8,9 @@
     </h2>
     <div class="item-img-content">
       <%= image_tag @item.image ,class:"item-box-img" %>
-      <% if @item.order.present? %>
-      <span class="sold-out">sold out</span>
+      <div class='sold-out'>
+          <span>Sold Out!!</span>
       </div>
-      <% end %>
     </div>
     <div class="item-price-box">
       <span class="item-price">
@@ -23,6 +22,7 @@
     </div>
 
  
+    <% if current_user %>
       <% if @item.user_id == current_user.id %>
         <%= link_to "商品の編集", "#", method: :get, class: "item-red-btn" %>
           <p class="or-text">or</p>
@@ -30,7 +30,7 @@
           <% else %>
         <%= link_to "購入画面に進む",  "#" ,class:"item-red-btn"%>
       <% end %>
-
+     <% end %>
 
     <div class="item-explain-box">
       <span><%= @item.description %></span>
