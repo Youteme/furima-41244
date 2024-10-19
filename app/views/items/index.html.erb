@@ -129,7 +129,7 @@
     <ul class='item-lists'>
       <% @items.each do |item|%>
       <li class='list'>
-        <%= link_to item_path(item) do %>
+        <%= link_to "#" do %>
         <div class='item-img-content'>
           <%= image_tag item.image.attached? ? url_for(item.image) : 'item-sample.png', class: "item-img" %>
           <div class='sold-out'>
