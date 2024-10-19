@@ -15,14 +15,14 @@
     </div>
     <div class="item-price-box">
       <span class="item-price">
-        <%= @item.price %>
+        ¥ <%= @item.price %>
       </span>
       <span class="item-postage">
         <%= @item.shipping_cost.name %>
       </span>
     </div>
 
-    <% if user_signed_in? && @item.order.nil? %>
+ 
       <% if @item.user_id == current_user.id %>
         <%= link_to "商品の編集", "#", method: :get, class: "item-red-btn" %>
           <p class="or-text">or</p>
@@ -30,7 +30,7 @@
           <% else %>
         <%= link_to "購入画面に進む",  "#" ,class:"item-red-btn"%>
       <% end %>
-    <% end %>
+
 
     <div class="item-explain-box">
       <span><%= @item.description %></span>
