@@ -127,15 +127,17 @@
       新規投稿商品
     </div>
     <ul class='item-lists'>
-      <% @items.each do |item|%>
+  <% if @items.any? %>
+    <% @items.each do |item| %>
       <li class='list'>
-        <%= link_to "#" do %>
-        <div class='item-img-content'>
-          <%= image_tag item.image.attached? ? url_for(item.image) : 'item-sample.png', class: "item-img" %>
-          <div class='sold-out'>
-            <span>Sold Out!!</span>
+        <%= link_to item_path(item) do %>
+          <div class='item-img-content'>
+            <%= image_tag item.image.attached? ? url_for(item.image) : 'item-sample.png', class: "item-img" %>
+            <%# <% if item.order.present? %>
+              <%# <span class="sold-out">sold out</span>
+            <% end %>
           </div>
-        </div>
+        <% end %>
         <div class='item-info'>
           <h3 class='item-name'>
             <%= item.name %>
@@ -148,12 +150,11 @@
             </div>
           </div>
         </div>
-        <% end %>
       </li>
-      <% end %>
-      <% if @items.length == 0%>
-      <li class='list'>
-        <%= link_to '#' do %>
+    <% end %>
+  <% else %>
+    <li class='list'>
+      <%= link_to '#' do %>
         <%= image_tag "https://tech-master.s3.amazonaws.com/uploads/curriculums/images/Rails1-4/sample.jpg", class: "item-img" %>
         <div class='item-info'>
           <h3 class='item-name'>
@@ -167,10 +168,10 @@
             </div>
           </div>
         </div>
-        <% end %>
-      </li>
       <% end %>
-    </ul>
+    </li>
+  <% end %>
+</ul>
   </div>
   <%# /商品一覧 %>
 </div>
