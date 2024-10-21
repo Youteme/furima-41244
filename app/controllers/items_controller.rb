@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:edit, :update, :destroy]
-  before_action :find_item, only: [:edit, :update, :destroy]
-  before_action :redirect_unless_owner, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:edit, :update]
+  before_action :find_item, only: [:new,:edit, :update]
+  before_action :redirect_unless_owner, only: [:edit, :update]
 
   def index
     @items = Item.all.order(created_at: :desc)
@@ -23,12 +23,9 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    @item = Item.find(params[:id])
   end
 
-  def update
-    @item = Item.find(params[:id])
-  
+  def update  
     if @item.update(item_params)
       redirect_to item_path(@item)
     else
