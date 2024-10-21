@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:edit, :update]
-  before_action :find_item, only: [:new,:edit, :update]
+  before_action :find_item, only: [:show,:edit, :update]
   before_action :redirect_unless_owner, only: [:edit, :update]
 
   def index
