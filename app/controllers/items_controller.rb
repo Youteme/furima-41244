@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
-  before_action :find_item, only: [:show, :edit, :update]
-  before_action :redirect_unless_owner, only: [:edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :find_item, only: [:show, :edit, :update, :destroy]
+  before_action :redirect_unless_owner, only: [:edit, :update, :destroy]
 
   def index
     @items = Item.all.order(created_at: :desc)
@@ -24,11 +24,19 @@ class ItemsController < ApplicationController
   def edit
   end
 
-  def update  
+  def update
     if @item.update(item_params)
       redirect_to item_path(@item)
     else
       render 'edit', status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if @item.destroy
+      return redirect_to root_path, notice: 'Item was successfully deleted.'
+    else
+      render 'show', status: :unprocessable_entity
     end
   end
 
@@ -45,8 +53,7 @@ class ItemsController < ApplicationController
 
     def redirect_unless_owner
       unless @item.user == current_user
-        redirect_to root_path
+        redirect_to root_path, alert: 'You are not authorized to perform this action.'
       end
     end
-
 end
