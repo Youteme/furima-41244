@@ -53,7 +53,6 @@ class ItemsController < ApplicationController
 
     def redirect_unless_owner
       unless @item.user == current_user
-        redirect_to root_path, alert: 'You are not authorized to perform this action.'
       end
     end
 end
