@@ -133,8 +133,8 @@
         <%= link_to item_path(item) do %>
           <div class='item-img-content'>
             <%= image_tag item.image.attached? ? url_for(item.image) : 'item-sample.png', class: "item-img" %>
-            <%# <% if item.order.present? %>
-              <%# <span class="sold-out">sold out</span>
+            <% <% if item.order.present? %>
+              <% <span class="sold-out">sold out</span>
             <% end %>
           </div>
         <% end %>
@@ -153,6 +153,7 @@
       </li>
     <% end %>
   <% else %>
+
     <li class='list'>
       <%= link_to '#' do %>
         <%= image_tag "https://tech-master.s3.amazonaws.com/uploads/curriculums/images/Rails1-4/sample.jpg", class: "item-img" %>
@@ -171,8 +172,9 @@
       <% end %>
     </li>
   <% end %>
-</ul>
+  </ul>
   </div>
+
   <%# /商品一覧 %>
 </div>
 <%= link_to(new_item_path, class: 'purchase-btn') do %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_19_031409) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_25_035444) do
   create_table "active_storage_attachments", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -64,6 +64,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_19_031409) do
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
+  create_table "order_shipping_addresses", charset: "utf8", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "orders", charset: "utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "item_id", null: false
@@ -73,9 +78,35 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_19_031409) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "payments", charset: "utf8", force: :cascade do |t|
+    t.string "post_code", null: false
+    t.integer "prefecture_id", null: false
+    t.string "city", null: false
+    t.string "block", null: false
+    t.string "building"
+    t.string "phone_number", null: false
+    t.bigint "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id"
+  end
+
   create_table "prefectures", charset: "utf8", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "shipping_addresses", charset: "utf8", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.string "post_code", null: false
+    t.integer "prefecture_id", null: false
+    t.string "city", null: false
+    t.string "address", null: false
+    t.string "building"
+    t.string "phone_number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_shipping_addresses_on_order_id"
   end
 
   create_table "shipping_costs", charset: "utf8", force: :cascade do |t|
@@ -111,4 +142,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_19_031409) do
   add_foreign_key "items", "users"
   add_foreign_key "orders", "items"
   add_foreign_key "orders", "users"
+  add_foreign_key "payments", "orders"
+  add_foreign_key "shipping_addresses", "orders"
 end

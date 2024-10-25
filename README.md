@@ -52,17 +52,17 @@
 - belongs_to :item
 - has_one :payment
 
-## payments テーブル
+## shipping_addresses テーブル
 
 | Column         | Type        | Options                        |
 | -------------- | ----------- | ------------------------------ |
 | order          | references  | null: false, foreign_key: true |
-| postcode       | string      | null: false                    |
+| post_code      | string      | null: false                    |
 | prefecture_id  | integer     | null: false                    |
 | city           | string      | null: false                    |
-| block          | string      | null: false                    |
+| address        | string      | null: false                    |
 | building       | string      |                                |
-| phone_number   | string      | null: null: false              |
+| phone_number   | string      | null: false                    |
 
 ### Association
 
