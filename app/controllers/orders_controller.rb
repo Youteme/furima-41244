@@ -1,28 +1,28 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: [:index, :create]
+  before_action :set_public_key, only: [:index, :create]
   def index
-    gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-    @order = Order.all.order(created_at: :desc)
+    if @item.order.nil? && @item.user_id != current_user.id
+      @order_shipping_address = OrderShippingAddress.new
+    else
+      redirect_to root_path
+    end
   end
 
   def create
-    @order = Order.new(order_params)
-    if @order.valid?
-      pay_item
-      @order.save
+    @order_shipping_address = OrderShippingAddress.new(order_params)
+    if @order_shipping_address.valid?
+      pay_order
+      @order_shipping_address.save
       redirect_to root_path
     else
-      gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-      render 'index', status: :unprocessable_entity
+      set_public_key
+      render :index, status: :unprocessable_entity
     end
   end
 
   private
-
-  def set_item
-    @item = Item.find(params[:item_id])
-  end
 
   def order_params
     params.require(:order_shipping_address).permit(
@@ -35,12 +35,20 @@ class OrdersController < ApplicationController
     ).merge(item_id: @item.id, user_id: current_user.id, token: params[:token])
   end
 
-  def pay_item
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
+
+  def pay_order
     Payjp.api_key = ENV['PAYJP_SECRET_KEY']
     Payjp::Charge.create(
-      amount: order_params[:price],
+      amount: @item.price,
       card: order_params[:token],
       currency: 'jpy'
     )
+  end
+
+  def set_public_key
+    gon.public_key = ENV['PAYJP_PUBLIC_KEY']
   end
 end

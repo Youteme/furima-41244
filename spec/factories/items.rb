@@ -15,7 +15,7 @@ FactoryBot.define do
                         filename: 'test_image.png', content_type: 'image/png')
     end
 
-    rait :sold_out do
+    trait :sold_out do
       after(:create) do |item|
         create(:order, item:, user: create(:user))
       end
