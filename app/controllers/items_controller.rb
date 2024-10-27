@@ -3,6 +3,7 @@ class ItemsController < ApplicationController
   before_action :find_item, only: [:show, :edit, :update, :destroy]
   before_action :redirect_unless_owner, only: [:edit, :update]
 
+
   def index
     @items = Item.all.order(created_at: :desc)
   end
@@ -37,6 +38,15 @@ class ItemsController < ApplicationController
     return redirect_to root_path if @item.destroy
 
     render 'show', status: :unprocessable_entity
+
+  end
+
+  def destroy
+    if @item.destroy
+      return redirect_to root_path, notice: 'Item was successfully deleted.'
+    else
+      render 'show', status: :unprocessable_entity
+    end
   end
 
   private
@@ -55,4 +65,5 @@ class ItemsController < ApplicationController
 
     redirect_to action: :index
   end
+
 end
