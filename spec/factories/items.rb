@@ -11,7 +11,14 @@ FactoryBot.define do
     association :user
 
     after(:build) do |item|
-      item.image.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'test_image.png')), filename: 'test_image.png', content_type: 'image/png')
+      item.image.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'test_image.png')),
+                        filename: 'test_image.png', content_type: 'image/png')
+    end
+
+    trait :sold_out do
+      after(:create) do |item|
+        create(:order, item:, user: create(:user))
+      end
     end
   end
 end

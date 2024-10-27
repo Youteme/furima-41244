@@ -1,7 +1,8 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :find_item, only: [:show, :edit, :update, :destroy]
-  before_action :redirect_unless_owner, only: [:edit, :update, :destroy]
+  before_action :redirect_unless_owner, only: [:edit, :update]
+
 
   def index
     @items = Item.all.order(created_at: :desc)
@@ -22,14 +23,22 @@ class ItemsController < ApplicationController
   end
 
   def edit
+    return if @item.order.nil?
+
+    redirect_to root_path
   end
 
   def update
-    if @item.update(item_params)
-      redirect_to item_path(@item)
-    else
-      render 'edit', status: :unprocessable_entity
-    end
+    return redirect_to item_path(@item) if @item.update(item_params)
+
+    render 'edit', status: :unprocessable_entity
+  end
+
+  def destroy
+    return redirect_to root_path if @item.destroy
+
+    render 'show', status: :unprocessable_entity
+
   end
 
   def destroy
@@ -49,10 +58,12 @@ class ItemsController < ApplicationController
 
   def find_item
     @item = Item.find(params[:id])
-    end
+  end
 
-    def redirect_unless_owner
-      unless @item.user == current_user
-      end
-    end
+  def redirect_unless_owner
+    return if current_user.id == @item.user_id
+
+    redirect_to action: :index
+  end
+
 end
